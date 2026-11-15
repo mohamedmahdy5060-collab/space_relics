@@ -1,0 +1,105 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #080d1c;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.hero {
+  text-align: center;
+  padding: 85px 20px;
+  background: linear-gradient(135deg, #101d3b, #24133d);
+}
+
+.hero h1 {
+  font-size: 55px;
+  letter-spacing: 5px;
+  color: #8fdcff;
+}
+
+.hero h2 {
+  color: #d3e8ff;
+}
+
+.tag {
+  color: #75d9ff;
+  letter-spacing: 4px;
+}
+
+button {
+  background: #1479bd;
+  color: white;
+  border: 0;
+  padding: 12px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+button:hover {
+  background: #269fe9;
+}
+
+nav {
+  text-align: center;
+  padding: 20px;
+}
+
+#museum {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  padding: 25px;
+}
+
+.card {
+  background: #141e34;
+  border: 1px solid #33496b;
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.picture {
+  background: #202e4a;
+  text-align: center;
+  padding: 35px;
+  font-size: 55px;
+  border-radius: 12px;
+}
+
+.card p {
+  color: #a9c4e8;
+  line-height: 1.6;
+}
+
+.story {
+  color: #c8e7ff;
+  line-height: 1.7;
+  margin-top: 15px;
+}
+
+footer {
+  background: #111b30;
+  text-align: center;
+  padding: 45px 15px;
+  margin-top: 30px;
+}
+
+footer h2 {
+  color: #8fdcff;
+}
+
+@media (max-width: 600px) {
+  .hero h1 {
+    font-size: 38px;
+    letter-spacing: 3px;
+  }
+
+  .hero {
+    padding: 65px 16px;
+  }
+}
