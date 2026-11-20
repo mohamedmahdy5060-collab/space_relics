@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GHOST RADIO | Abandoned but not Forgotten</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;900&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#ece2d0;--wood:#7a4a24;--wood2:#5b3416;--panel:#d8c9a8;--ink:#2a1d12;--dim:#6b5a48;--acc:#a8420f;--scr:#0a0704;--glow:#ffb347;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d0906;--wood:#4a2b12;--wood2:#2f1a09;--panel:#2a1f14;--ink:#f1e5d0;--dim:#a2907a;--acc:#ff9a4d}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.05rem/1.7 'IBM Plex Sans',system-ui,sans-serif}
+h1,h2{font-family:Fraunces,Georgia,serif;line-height:1.05;margin:0 0 .4em}
+main{max-width:760px;margin:0 auto;padding:28px 16px 50px}
+h1{font-size:clamp(2.6rem,10vw,5rem);font-weight:900;letter-spacing:-.02em}
+.lead{color:var(--dim);max-width:560px}
+.radio{margin:26px 0;background:linear-gradient(var(--wood),var(--wood2));border-radius:26px;padding:18px;box-shadow:0 14px 0 rgba(0,0,0,.25)}
+.face{background:var(--panel);border-radius:16px;padding:16px}
+.scr{background:repeating-linear-gradient(0deg,rgba(255,179,71,.05) 0 1px,transparent 1px 4px),var(--scr);color:var(--glow);border-radius:10px;padding:14px;min-height:210px;text-shadow:0 0 8px rgba(255,179,71,.55);box-shadow:inset 0 0 40px rgba(0,0,0,.9)}
+#rt{transition:filter .25s}
+.grille{height:34px;margin-top:12px;border-radius:8px;background:repeating-linear-gradient(90deg,var(--wood2) 0 3px,transparent 3px 8px);opacity:.55}
+.knob{width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#e8d5a8,#8a6a3a);border:2px solid var(--wood2);position:relative;transition:transform .1s;flex:none}
+.knob::after{content:"";position:absolute;left:50%;top:3px;width:3px;height:14px;background:var(--wood2);transform:translateX(-50%);border-radius:2px}
+.lamp{width:12px;height:12px;border-radius:50%;background:#5a3a1a;flex:none}
+.lamp.on{background:var(--glow);box-shadow:0 0 12px var(--glow)}
+canvas{width:100%;height:64px;display:block}
+#rn{font-family:Fraunces,serif;font-size:1.25rem;min-height:1.6em}
+#rt{font-family:Georgia,serif;font-size:1.1rem;min-height:3.6em;margin:6px 0}
+#rm{font-size:.85rem;color:#9b8a70}
+.scale{position:relative;margin-top:16px;height:46px;border-bottom:2px solid var(--dim);direction:ltr}
+.scale i{position:absolute;bottom:0;width:1px;height:12px;background:var(--dim)}
+.scale i.b{height:22px}
+.scale span{position:absolute;bottom:24px;transform:translateX(-50%);font-size:.7rem;color:var(--dim)}
+#needle{position:absolute;bottom:0;width:3px;height:46px;background:var(--acc);transform:translateX(-50%)}
+input[type=range]{width:100%;direction:ltr;accent-color:var(--acc);height:38px;margin-top:6px}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:6px}
+button{font:inherit;font-weight:600;background:var(--acc);color:#fff;border:0;border-radius:12px;padding:11px 20px;cursor:pointer;min-height:44px}
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--dim)}
+:focus-visible{outline:3px solid var(--glow);outline-offset:2px}
+#hint{color:var(--dim);font-size:.9rem}
+.end{display:none;border:1px solid var(--acc);border-radius:12px;padding:18px;margin:10px 0}
+.end h2{font-size:1.5rem;color:var(--acc)}
+.end input{width:100%;padding:10px;border-radius:10px;border:1px solid var(--dim);background:var(--bg);color:var(--ink);font:inherit;margin:8px 0}
+.prog{color:var(--dim);font-size:.9rem}
+#log{margin:8px 0 0;padding-left:18px;color:var(--dim);font-size:.9rem}
+details{margin-top:22px;border-top:1px solid var(--dim);padding-top:14px}
+summary{cursor:pointer;font-weight:600}
+footer{margin-top:36px;color:var(--dim);font-size:.85rem;border-top:1px solid var(--dim);padding-top:14px}
+</style>
+</head>
+<body>
+<main>
+<h1>GHOST RADIO</h1>
+<p class="lead">NASA's forgotten machines on the Moon and Mars are still out there. Turn the dial, find their frequency, and hear them fade.</p>
+
+<div class="radio"><div class="face">
+ <div class="scr">
+  <canvas id="wave" width="600" height="64" aria-hidden="true"></canvas>
+  <div id="rn" aria-live="polite">No signal</div>
+  <div id="rt" aria-live="polite">Press power, then turn the dial slowly.</div>
+  <div id="rm"></div>
+ </div>
+ <div class="scale" id="scale" aria-hidden="true"><div id="needle"></div></div>
+ <input id="dial" type="range" min="880" max="1080" value="880" aria-label="Tuning dial">
+ <div class="grille" aria-hidden="true"></div>
+ <div class="row"><div class="knob" id="knob" aria-hidden="true"></div><span class="lamp" id="lamp" aria-hidden="true"></span><button id="pw">Power on</button><button class="ghost" id="bd">Band: Mars</button><button class="ghost" id="vo" aria-pressed="false">Voice: off</button><span id="hint"></span></div>
+</div></div>
+
+<div class="end" id="end" aria-live="polite">
+ <h2 id="eT"></h2><p id="eS"></p><p><b id="eC"></b></p>
+ <label for="msg">Send a signal back. Nobody will answer, but it will be sent.</label>
+ <input id="msg" maxlength="80" placeholder="Write a short message">
+ <button id="go">Send signal</button>
+ <ul id="log"></ul>
+</div>
+<p class="prog" id="prog">Relics heard: 0 / 7</p>
+
+<details open><summary>About this project</summary>
+<p>Each relic is a station. Stay on its frequency and its story plays in first person. As time passes, the signal weakens, until the last message and then silence. You don't read that a machine went quiet. You hear it happen.</p>
+<p>Mars band: Sojourner 90.0, Phoenix 93.8, Spirit 97.6, Opportunity 101.4, InSight 105.2. Moon band: ALSEP 93.0, Apollo 17 Rover 101.0. Use the Band button to switch.</p>
+</details>
+<details><summary>Facts &amp; sources</summary>
+<p>Dates are based on NASA/JPL material. The spoken lines are creative first-person retellings, not real recordings. "My battery is low and it's getting dark" is a widely shared poetic paraphrase of Opportunity's final data, not a literal message.</p>
+<p><a href="https://science.nasa.gov/mission/mer-opportunity/">Opportunity</a> · <a href="https://science.nasa.gov/mission/mer-spirit/">Spirit</a> · <a href="https://science.nasa.gov/mission/mars-pathfinder/">Pathfinder / Sojourner</a> · <a href="https://science.nasa.gov/mission/mars-phoenix/">Phoenix</a> · <a href="https://www.nasa.gov/missions/insight/nasa-retires-insight-mars-lander-mission-after-years-of-science/">InSight</a></p></details>
+<footer>Ghost Radio · A student project for the NASA Space Apps Challenge. NASA is not affiliated with or endorsing it.</footer>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+// ===== DATA: edit lines freely, verify facts on NASA sources =====
+const ST=[
+{b:"moon",f:930,n:"ALSEP · Moon",last:"1977-09-30",lines:["Moon, 1972. Astronauts set me up and walked away.","I listen to moonquakes and measure the Moon's heat.","Year after year, I send my data to Earth.","September 1977. They switched me off. Goodnight."],end:["Switched off: September 30, 1977","The Apollo science stations sent data for years before NASA shut them down."]},
+{b:"moon",f:1010,n:"Apollo 17 Rover · Moon",last:"1972-12-14",lab:"Parked for",lines:["Moon, December 1972. I carried two astronauts across the valley.","They drove me hard, and I never broke down.","Now the last footsteps are leaving.","They parked me here for good. I am still facing the sky."],end:["Parked on the Moon: December 1972","Apollo 15, 16 and 17 each left an electric rover on the Moon on purpose."]},
+{b:"mars",f:900,n:"Sojourner · Mars",last:"1997-09-27",lines:["Mars, July 1997. I am the first rover. I am small, but I move.","I touched a rock and measured it. Dust is everywhere.","The lander that talks to Earth has stopped answering.","Silence. I am still here."],end:["Last contact: September 27, 1997","Sojourner was the first wheeled rover to explore Mars."]},
+{b:"mars",f:938,n:"Phoenix · Mars",last:"2008-11-02",lines:["Mars, May 2008. I landed near the north pole. It is so cold here.","I dug into the soil and found ice under my feet.","The sun is getting low. Winter is coming.","The polar night is here. Goodnight."],end:["Last contact: November 2, 2008","Phoenix studied ice-rich soil in the Martian Arctic."]},
+{b:"mars",f:976,n:"Spirit · Mars",last:"2010-03-22",lines:["Mars, January 2004. Landing confirmed. I am awake.","I climbed the Columbia Hills. The view is endless.","My wheel is stuck in soft sand. I keep trying.","Winter is here. I can barely keep warm. Are you there?"],end:["Last contact: March 22, 2010","NASA ended its efforts to contact Spirit in 2011."]},
+{b:"mars",f:1014,n:"Opportunity · Mars",last:"2018-06-10",lines:["Mars, January 2004. We landed. I will drive for 90 days.","Year 10. I have driven a marathon. I feel strong.","A great dust storm is covering the sky. The sun is fading.","My battery is low and it's getting dark."],end:["Last contact: June 10, 2018","Planned for 90 days, Opportunity worked for about 14 years."]},
+{b:"mars",f:1052,n:"InSight · Mars",last:"2022-12-15",lines:["Mars, November 2018. I am here to listen to the planet.","I felt Mars shake. I heard its heartbeat.","Dust is covering my solar panels.","My power is almost gone. Goodnight."],end:["Last contact: December 2022","NASA retired InSight after it stopped communicating."]}];
+let band="mars",ac,ng,on=false,voice=false,sig=0,cs=null,ix=0,tm=null,dead=false;const heard=new Set();
+function audio(){ac=new(window.AudioContext||window.webkitAudioContext)();const n=ac.sampleRate*2,b=ac.createBuffer(1,n,ac.sampleRate),d=b.getChannelData(0);for(let i=0;i<n;i++)d[i]=Math.random()*2-1;
+ const s=ac.createBufferSource();s.buffer=b;s.loop=true;const f=ac.createBiquadFilter();f.type="bandpass";f.frequency.value=2200;f.Q.value=.4;ng=ac.createGain();ng.gain.value=.2;s.connect(f).connect(ng).connect(ac.destination);s.start()}
+function cor(t,p){const g="░▒▓#%?";let o="";for(const c of t)o+=(c!==" "&&Math.random()<p)?g[Math.random()*g.length|0]:c;return o}
+function tts(t){if(!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="en-US";u.rate=.85;u.pitch=.8;u.volume=Math.min(1,sig);speechSynthesis.speak(u)}
+function say(t){if(!voice||sig<.5||!cs)return;try{speechSynthesis.cancel()}catch(e){}if(window._a)_a.pause();
+ const key=cs.n.split(" ·")[0].toLowerCase().replace(/[^a-z0-9]+/g,"-");
+ let done=0;const fb=()=>{if(!done){done=1;tts(t)}};
+ const a=new Audio("audio/"+key+"-"+(ix+1)+".mp3");a.volume=Math.min(1,sig);window._a=a;a.onerror=fb;a.play().catch(fb)}
+// dial scale
+const sc=$("scale");for(let f=880;f<=1080;f+=10){const i=document.createElement("i");i.style.left=((f-880)/2)+"%";if(f%50===0){i.className="b";const s=document.createElement("span");s.style.left=i.style.left;s.textContent=f/10;sc.appendChild(s)}sc.appendChild(i)}
+function tune(){
+ const f=+$("dial").value;$("needle").style.left=((f-880)/2)+"%";$("knob").style.transform=`rotate(${(f-880)*1.5-150}deg)`;
+ let b=null,bd=1e9;ST.forEach(s=>{if(s.b!==band)return;const d=Math.abs(s.f-f);if(d<bd){bd=d;b=s}});
+ sig=dead?0:Math.max(0,1-bd/18);if(window._a)_a.volume=Math.min(1,sig);
+ if(ac)ng.gain.setTargetAtTime(dead?0:.02+(1-sig)*.25,ac.currentTime,.05);
+ if(dead)return;
+ if(sig>.3){
+  if(cs!==b){cs=b;ix=0;$("end").style.display="none";clearInterval(tm);tm=setInterval(adv,4800);say(b.lines[0])}
+  $("rn").textContent=b.n;$("rt").style.filter=`blur(${((1-sig)*1.4).toFixed(1)}px)`;
+  $("rt").textContent=cor(b.lines[ix],Math.min(.95,(1-sig)*1.1+ix/(b.lines.length-1)*.25));
+  $("rm").textContent=(f/10).toFixed(1)+" MHz · signal "+Math.round(sig*100)+"%";
+ }else{
+  if(cs){speechSynthesis&&speechSynthesis.cancel();window._a&&_a.pause()}
+  cs=null;clearInterval(tm);$("rt").style.filter="none";$("rn").textContent="No signal";$("rt").textContent=cor("kshhh fzzzt krrr",.2);$("rm").textContent=(f/10).toFixed(1)+" MHz";
+ }
+}
+function adv(){
+ if(!cs)return;
+ if(ix<cs.lines.length-1){ix++;say(cs.lines[ix]);return}
+ clearInterval(tm);const s=cs;
+ setTimeout(()=>{if(cs!==s)return;dead=true;speechSynthesis&&speechSynthesis.cancel();
+  $("rn").textContent="";$("rt").textContent="";$("rm").textContent="";
+  setTimeout(()=>{dead=false;heard.add(s.n);$("prog").textContent="Relics heard: "+heard.size+" / "+ST.length+(heard.size===ST.length?"  ·  You heard them all.":"");
+   $("eT").textContent=s.end[0];$("eS").textContent=s.end[1];$("end").style.display="block";cs=s;ix=s.lines.length-1;
+   const c=()=>{let t=Math.floor((Date.now()-new Date(s.last+"T00:00:00Z"))/1000);const y=Math.floor(t/31557600);t-=y*31557600;const d=Math.floor(t/86400);t-=d*86400;const h=Math.floor(t/3600);t-=h*3600;const m=Math.floor(t/60);$("eC").textContent=`${s.lab||"Silent for"} ${y} years, ${d} days, ${h}h ${m}m`};c();
+   $("end").scrollIntoView({behavior:"smooth",block:"nearest"});$("rn").textContent="";$("rt").textContent="…"+s.n.split(" ·")[0]+" has gone quiet.";cs=null},3600)},2200);
+}
+$("pw").onclick=()=>{if(!ac)audio();on=!on;$("lamp").classList.toggle("on",on);on?ac.resume():ac.suspend();$("pw").textContent=on?"Power off":"Power on";$("hint").textContent=on?"Turn the dial slowly.":"";$("rt").textContent=on?"Turn the dial slowly.":"Press power, then turn the dial slowly."};
+$("vo").onclick=()=>{voice=!voice;$("vo").textContent="Voice: "+(voice?"on":"off");$("vo").setAttribute("aria-pressed",voice);if(!voice&&window.speechSynthesis)speechSynthesis.cancel()};
+$("bd").onclick=()=>{band=band==="mars"?"moon":"mars";$("bd").textContent="Band: "+(band==="mars"?"Mars":"Moon");try{speechSynthesis.cancel()}catch(e){}if(window._a)_a.pause();cs=null;clearInterval(tm);dead=false;$("end").style.display="none";$("rn").textContent="No signal";tune()};
+$("dial").oninput=tune;setInterval(tune,300);
+$("go").onclick=()=>{const v=$("msg").value.trim();if(!v)return;const li=document.createElement("li");li.textContent="Sent: “"+v+"”";$("log").prepend(li);$("msg").value=""};
+(function w(t){const c=$("wave"),x=c.getContext("2d");x.clearRect(0,0,600,64);x.strokeStyle="#ffb347";x.lineWidth=2;x.beginPath();
+ for(let i=0;i<600;i+=3){const y=32+(Math.random()-.5)*(dead||!on?2:(1-sig)*55+4)+(dead||!on?0:Math.sin(i*.04+t*.008)*sig*20);i?x.lineTo(i,y):x.moveTo(i,y)}x.stroke();requestAnimationFrame(w)})(0);
+tune();
+</script>
+</body>
+</html>
