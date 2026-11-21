@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Space Relics: an interactive museum and radio for the machines NASA left on the Moon and Mars.">
+<meta name="theme-color" content="#04060f">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%2790%27 font-size=%2790%27%3E🌕%3C/text%3E%3C/svg%3E">
+<title>SPACE RELICS | The Museum of Forgotten Machines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Space+Grotesk:wght@400;500;700&family=Tajawal:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div id="glow"></div>
+<div id="bar"></div>
+<a class="radio" href="ghostradio.html"><span>📻</span> Ghost Radio</a>
+
+<header id="top">
+ <div class="planet"><i>🚀</i><i>🛰️</i><i>🤖</i></div>
+ <div class="hero">
+  <div class="kicker">NASA SPACE ARCHIVE · AN INTERACTIVE STORY MUSEUM</div>
+  <h1><span>SPACE</span><span>RELICS</span></h1>
+  <h2>They left. Their legacy didn't.</h2>
+  <p>Step inside a museum without walls. Meet the machines, experiments and landers humans left on the Moon and Mars, and hear why their stories still matter.</p>
+  <a class="btn" href="#archive">ENTER THE ARCHIVE <b>↓</b></a> <a class="btn ghost" href="ghostradio.html">📻 GHOST RADIO</a>
+ </div>
+ <div class="scroll">SCROLL</div>
+</header>
+
+<nav>
+ <a href="#about">The Mission</a><a href="#archive">Archive</a><a href="#quiz">Quiz</a><a href="#timeline">Timeline</a><a href="#legacy">Legacy</a><a href="#game">Game</a><a href="ghostradio.html">Radio</a><a href="#sources">Sources</a>
+<button class="lgb nb" style="margin:0">العربية</button></nav>
+
+<section id="about" class="rv">
+ <div class="kick">THE IDEA</div>
+ <h2 class="title">A museum <em>without walls.</em></h2>
+ <p class="lead">When a mission ends, its hardware does not always come home. Some machines were left behind on purpose to save weight, some fell silent after years of work, and some instruments were built to stay on another world. They are not leftovers. They are evidence of exploration.</p>
+ <div class="notice"><strong>Important distinction:</strong> "Abandoned" does not always mean broken. Apollo descent stages and rovers were left on the Moon intentionally, some experiments were switched off, and Mars landers and rovers went silent when their missions ended.</div>
+ <div class="stats">
+  <div class="stat"><b data-n="2">0</b><span>Worlds · Moon & Mars</span></div>
+  <div class="stat"><b data-n="11">0</b><span>Relics · vehicles, landers, experiments</span></div>
+  <div class="stat"><b data-n="1">0</b><span>Legacy · knowledge that came home</span></div>
+ </div>
+</section>
+
+<section id="archive" class="rv">
+ <div class="kick">THE COLLECTION</div>
+ <h2 class="title">Choose a world. <em>Meet its relics.</em></h2>
+ <p class="lead">Tap any exhibit to open its story, mission facts and legacy.</p>
+ <div class="filters">
+  <button class="filter active" data-filter="all">All exhibits</button>
+  <button class="filter" data-filter="Moon">🌕 Moon</button>
+  <button class="filter" data-filter="Mars">🔴 Mars</button>
+ </div>
+ <div class="grid" id="cards"></div>
+</section>
+
+<dialog id="detail"></dialog>
+
+<section id="quiz" class="rv">
+ <div class="kick">MISSION CONTROL</div>
+ <h2 class="title">Test your <em>space memory.</em></h2>
+ <div class="qz" id="qz"></div>
+</section>
+
+<section id="timeline" class="rv">
+ <div class="kick">FROM THE ARCHIVE</div>
+ <h2 class="title">A timeline of <em>human footprints.</em></h2>
+ <div class="timeline">
+  <div class="ti"><strong>1969</strong>Apollo 11 lands on the Moon; astronauts deploy early science equipment and a laser retroreflector.</div>
+  <div class="ti"><strong>1971–1972</strong>Apollo 15, 16 and 17 use electric Lunar Roving Vehicles, then leave them and their descent stages behind.</div>
+  <div class="ti"><strong>1977</strong>NASA switches off the Apollo Lunar Surface Experiments Package stations.</div>
+  <div class="ti"><strong>1997</strong>Mars Pathfinder lands with Sojourner, the first successful wheeled rover on Mars.</div>
+  <div class="ti"><strong>2004</strong>Spirit and Opportunity arrive on Mars to search for evidence of ancient water.</div>
+  <div class="ti"><strong>2008</strong>Phoenix lands in the Martian Arctic and studies ice-rich soil.</div>
+  <div class="ti"><strong>2010–2011</strong>Spirit falls silent; NASA ends attempts to contact it in 2011.</div>
+  <div class="ti"><strong>2018–2019</strong>Opportunity's last contact comes during a planet-wide dust storm; the mission ends in 2019.</div>
+  <div class="ti"><strong>2022</strong>NASA retires the InSight lander after it stops communicating.</div>
+  <div class="ti"><strong>2024</strong>Ingenuity ends its flights after 72 trips, following rotor damage.</div>
+ </div>
+</section>
+
+<section id="legacy" class="rv">
+ <div class="kick">WHY THEY MATTER</div>
+ <h2 class="title">The machine stops. <em>The discovery travels on.</em></h2>
+ <div class="compare">
+  <article><i>⚙️</i><h3>Engineering</h3><p>Each mission tested ways to land, move, communicate and survive in extreme places. Later missions built on those lessons.</p></article>
+  <article><i>🔬</i><h3>Science</h3><p>Rocks, soil, seismic waves and dust became easier to understand because instruments gathered data in place.</p></article>
+  <article><i>👣</i><h3>Human history</h3><p>Tracks, landing stages and instruments mark where people and their robots explored beyond Earth.</p></article>
+ </div>
+ <p class="msg"><strong>Our message:</strong> A mission can end, but the knowledge it creates can keep shaping the future.</p>
+</section>
+
+<section id="build" class="rv">
+ <div class="kick">HOW IT'S MADE</div>
+ <h2 class="title">Built from <em>real data.</em></h2>
+ <div class="compare">
+  <article><i>🛰️</i><h3>NASA sources</h3><p>Every date and mission detail comes from NASA and NASA/JPL pages, listed in the source archive.</p></article>
+  <article><i>🧩</i><h3>No frameworks</h3><p>Plain HTML, CSS and JavaScript with Canvas and Web Audio. It loads fast and runs anywhere.</p></article>
+  <article><i>📻</i><h3>Stories as signals</h3><p>Ghost Radio turns each machine into a voice you have to find by tuning the dial.</p></article>
+ </div>
+</section>
+
+<section id="game" class="rv">
+ <div class="kick">FINAL MISSION</div>
+ <h2 class="title">Land the <em>Eagle.</em></h2>
+ <p class="lead">Every relic here once had to land. Now it is your turn. Touch down gently on the glowing pad, and become part of the story.</p>
+ <div class="gw"><canvas id="lg"></canvas>
+ <div class="gc" id="lv" style="flex-wrap:wrap"></div>
+ <div class="gc"><button id="gl">◀</button><button id="gt">🔥 THRUST</button><button id="gr">▶</button><button id="gx">↻</button></div>
+ <p class="lead" id="gs"></p></div>
+</section>
+
+<section id="sources" class="rv">
+ <div class="kick">FACT CHECK & FURTHER READING</div>
+ <h2 class="title">NASA <em>source archive.</em></h2>
+ <p class="lead">Dates and scientific details are based on NASA and NASA/JPL material. Story quotes are creative first-person retellings, not real recordings from spacecraft.</p>
+ <div class="source-list">
+  <a href="https://www.nasa.gov/specials/apollo50th/missions.html" target="_blank" rel="noopener">NASA — Apollo missions & Lunar Rover</a>
+  <a href="https://www.nasa.gov/wp-content/uploads/2023/12/nasa-usg-lunar-historic-sites-reva.pdf" target="_blank" rel="noopener">NASA — Lunar historic sites & Apollo artifacts</a>
+  <a href="https://www.nasa.gov/history/50-years-ago-apollo-17-post-mission-activities/" target="_blank" rel="noopener">NASA — Apollo 17 & ALSEP experiments</a>
+  <a href="https://science.nasa.gov/mission/mars-pathfinder/" target="_blank" rel="noopener">NASA — Mars Pathfinder</a>
+  <a href="https://science.nasa.gov/mission/mer-spirit/" target="_blank" rel="noopener">NASA — Spirit rover</a>
+  <a href="https://science.nasa.gov/mission/mer-opportunity/" target="_blank" rel="noopener">NASA — Opportunity rover</a>
+  <a href="https://science.nasa.gov/mission/mars-phoenix/" target="_blank" rel="noopener">NASA — Phoenix lander</a>
+  <a href="https://www.nasa.gov/missions/insight/nasa-retires-insight-mars-lander-mission-after-years-of-science/" target="_blank" rel="noopener">NASA — InSight retirement</a>
+  <a href="https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/" target="_blank" rel="noopener">NASA — Spirit & Opportunity overview</a>
+ </div>
+</section>
+
+<footer><strong>SPACE RELICS</strong><br>THE MUSEUM OF FORGOTTEN MACHINES<br><span>An educational storytelling project · NASA is not affiliated with or endorsing this student project.</span></footer>
+<script src="relics.js"></script>
+<script src="relics_ar.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
